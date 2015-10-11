@@ -134,7 +134,7 @@ __mix_get_tasks()
         # tasks.exs outputs a space-delimted string of Mix tasks
         exs="$HOME/.mix-completion-tasks.exs"
         chmod +x "$exs"
-        tasks=($(./$exs))
+        tasks=($($exs))
 
         # join array with spaces
         separator=" "
