@@ -9,9 +9,8 @@
 #
 # Installation:
 #
-#   *) Copy this file and .tasks.exs to ~/.mix-completion.bash
 #   *) Append this line to your .bashrc:
-#       source ~/.mix-completion.bash
+#       source $YOUR_DIR/mix-completion.bash
 #   *) Run the above command for the changes to take place immediately
 
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
