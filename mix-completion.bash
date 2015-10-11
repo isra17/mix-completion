@@ -14,6 +14,8 @@
 #       source ~/.mix-completion.bash
 #   *) Run the above command for the changes to take place immediately
 
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 __mix()
 {
     local cwd current previous more_previous exs tasks separator task_list superoption i j
@@ -24,7 +26,7 @@ __mix()
     previous="${COMP_WORDS[COMP_CWORD - 1]}"
     more_previous="${COMP_WORDS[COMP_CWORD - 2]}"
 
-    __mix_get_tasks "$HOME/.mix-completion-task-list"
+    __mix_get_tasks
 
     case "${previous}" in
         mix)
@@ -129,23 +131,14 @@ __mix_get_superoption()
 
 __mix_get_tasks()
 {
-    # create a cache if it doesn't exist
-    if [ ! -f "$1" ] ; then
-        # tasks.exs outputs a space-delimted string of Mix tasks
-        exs="$HOME/.mix-completion-tasks.exs"
-        chmod +x "$exs"
-        tasks=($($exs))
+    # tasks.exs outputs a space-delimted string of Mix tasks
+    exs="${dir}/mix-completion-tasks.exs"
+    tasks=($(mix run ${exs} 2> /dev/null || elixir ${exs} 2> /dev/null))
 
-        # join array with spaces
-        separator=" "
-        task_list="$(printf "${separator}%s" "${tasks[@]}")"
-        task_list="${task_list:${#separator}}"
-
-        echo "$task_list" >> "$1"
-    else
-        task_list=$(head -1 "$1")
-        tasks=($task_list)
-    fi
+    # join array with spaces
+    separator=" "
+    task_list="$(printf "${separator}%s" "${tasks[@]}")"
+    task_list="${task_list:${#separator}}"
 }
 
 __mix_complete_commands()
